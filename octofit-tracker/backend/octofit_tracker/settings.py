@@ -27,8 +27,16 @@ SECRET_KEY = 'django-insecure-i+$hv=0rw*jy-ma4921j0)4qs_ms5cn$q#t!j57lh%!qqi7mn&
 DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
-if os.environ.get('CODESPACE_NAME'):
-    ALLOWED_HOSTS.append(f"{os.environ.get('CODESPACE_NAME')}-8000.app.github.dev")
+CODESPACE_NAME = os.environ.get('CODESPACE_NAME')
+if CODESPACE_NAME:
+    ALLOWED_HOSTS.append(f"{CODESPACE_NAME}-8000.app.github.dev")
+
+CSRF_TRUSTED_ORIGINS = ['http://localhost:8000', 'http://127.0.0.1:8000']
+if CODESPACE_NAME:
+    CSRF_TRUSTED_ORIGINS.append(f"https://{CODESPACE_NAME}-8000.app.github.dev")
+
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 
 # Application definition
