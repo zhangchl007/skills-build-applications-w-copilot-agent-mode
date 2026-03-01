@@ -29,7 +29,9 @@ DEBUG = True
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 CODESPACE_NAME = os.environ.get('CODESPACE_NAME')
 if CODESPACE_NAME:
-    ALLOWED_HOSTS.append(f"{CODESPACE_NAME}-8000.app.github.dev")
+    codespace_host = f"{CODESPACE_NAME}-8000.app.github.dev"
+    if codespace_host not in ALLOWED_HOSTS:
+        ALLOWED_HOSTS.append(codespace_host)
 
 CSRF_TRUSTED_ORIGINS = ['http://localhost:8000', 'http://127.0.0.1:8000']
 if CODESPACE_NAME:
@@ -37,6 +39,25 @@ if CODESPACE_NAME:
 
 USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# Djongo/MongoDB configuration
+DATABASES = {
+    'default': {
+        'ENGINE': 'djongo',
+        'NAME': 'octofit_db',
+        'ENFORCE_SCHEMA': False,
+        'CLIENT': {
+            'host': '127.0.0.1',
+            'port': 27017,
+        }
+    }
+}
+
+# CORS configuration
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_ALL_METHODS = True
+CORS_ALLOW_ALL_HEADERS = True
 
 
 # Application definition
@@ -84,23 +105,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'octofit_tracker.wsgi.application'
-
-
-# Database
-# https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'djongo',
-        'NAME': 'octofit_db',
-        'HOST': '127.0.0.1',
-        'PORT': 27017,
-    }
-}
-
-CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOW_ALL_METHODS = True
-CORS_ALLOW_ALL_HEADERS = True
 
 
 # Password validation

@@ -39,8 +39,8 @@ class WorkoutSuggestionViewSet(viewsets.ModelViewSet):
 
 
 router = DefaultRouter()
+router.register('users', UserProfileViewSet)
 router.register('teams', TeamViewSet)
-router.register('profiles', UserProfileViewSet)
 router.register('activities', ActivityLogViewSet)
 router.register('leaderboard', LeaderboardEntryViewSet)
 router.register('workouts', WorkoutSuggestionViewSet)
@@ -50,8 +50,8 @@ router.register('workouts', WorkoutSuggestionViewSet)
 def api_root(request):
     return Response(
         {
+            'users': request.build_absolute_uri('users/'),
             'teams': request.build_absolute_uri('teams/'),
-            'profiles': request.build_absolute_uri('profiles/'),
             'activities': request.build_absolute_uri('activities/'),
             'leaderboard': request.build_absolute_uri('leaderboard/'),
             'workouts': request.build_absolute_uri('workouts/'),

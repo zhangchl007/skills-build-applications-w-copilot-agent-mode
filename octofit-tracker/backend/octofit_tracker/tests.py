@@ -43,11 +43,11 @@ class OctoFitApiTests(TestCase):
     def test_api_root_endpoint(self):
         response = self.client.get('/api/')
         self.assertEqual(response.status_code, 200)
-        self.assertIn('teams', response.data)
-        self.assertIn('profiles', response.data)
+        payload = response.json()
+        self.assertIn('users', payload)
+        self.assertIn('teams', payload)
 
     def test_root_points_to_api(self):
         response = self.client.get('/')
-        self.assertEqual(response.status_code, 200)
-        self.assertIn('teams', response.data)
-        self.assertIn('profiles', response.data)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, '/api/')
